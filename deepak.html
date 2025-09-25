@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Quiz Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f3f6;
+      padding: 20px;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    .option {
+      margin: 10px 0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container" id="quiz-box">
+    <h2 id="question">Question will appear here</h2>
+    <div id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    // Quiz questions
+    const quiz = [
+      { 
+        q: "What is 2 + 2?", 
+        options: ["3", "4", "5"], 
+        answer: "4" 
+      },
+      { 
+        q: "Which is the capital of India?", 
+        options: ["Delhi", "Mumbai", "Kolkata"], 
+        answer: "Delhi" 
+      },
+      { 
+        q: "HTML stands for?", 
+        options: ["Hyper Text Markup Language", "Home Tool Markup Language", "Hyperlinks Text Mark Language"], 
+        answer: "Hyper Text Markup Language" 
+      }
+    ];
+
+    let index = 0, score = 0;
+
+    // Load question
+    function loadQuestion() {
+      let q = quiz[index];
+      document.getElementById("question").innerText = q.q;
+      let optionsHTML = "";
+      q.options.forEach(opt => {
+        optionsHTML += `<div class="option"><input type="radio" name="opt" value="${opt}"> ${opt}</div>`;
+      });
+      document.getElementById("options").innerHTML = optionsHTML;
+    }
+
+    // Go to next question
+    function nextQuestion() {
+      let selected = document.querySelector('input[name="opt"]:checked');
+      if (selected && selected.value === quiz[index].answer) {
+        score++;
+      }
+      index++;
+      if (index < quiz.length) {
+        loadQuestion();
+      } else {
+        document.getElementById("quiz-box").innerHTML = `
+          <h2>Quiz Completed!</h2>
+          <p id="result">Your Score: ${score} / ${quiz.length}</p>
+        `;
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
